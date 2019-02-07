@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+int n;	
+int main() {
+	cin>>n;
+	double MAX=sqrt(n);
+	int t=0;
+	int a,b,c;
+	double d;
+	for(a=0;a<MAX;a++){
+		for(b=a;b<MAX;b++){
+			for(c=b;c<MAX;c++){
+				d=sqrt(n-a*a-b*b-c*c);  
+				if(d==(int)d){
+					printf("%d %d %d %0.0f",a,b,c,d);		
+					t=1;
+					break;
+				}
+			}
+		if(t) break;
+		}
+	if(t) break;
+	}			
+	return 0;
+}
