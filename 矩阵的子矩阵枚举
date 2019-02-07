@@ -1,0 +1,49 @@
+/**
+***此题完成了枚举子矩阵的功能
+**/
+#include<cstdio>
+/**
+***get函数的功能是枚举固定行的情况下子列的所有情况
+**/
+int get(int buf[],int m)          
+{
+    int maxk = -100000;
+    for(int i=0;i<m;i++){
+        int temp_max = 0;
+        for(int j=i;j<m;j++){
+            temp_max += buf[j];
+            if(maxk<temp_max) maxk = temp_max;
+        }
+    }
+    return maxk;
+}
+
+int main()
+{
+    const int maxn = 55;
+    int arr[maxn][maxn] = {0};
+    int n,m;
+    scanf("%d%d",&n,&m);
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            scanf("%d",&arr[i][j]);
+        }
+    }
+    int ans = -1000000;
+/**
+***外两层循环表示1~n,2~n,...n-1~n,n的矩阵情况
+**/
+    for(int i=0;i<n;i++){
+        int buf[maxn] = {0};
+        for(int j=i;j<n;j++){
+            int k;
+            for(k=0;k<m;k++){
+                buf[k] += arr[j][k];
+            }
+            int line_max = get(buf,m);
+            if(ans<line_max) ans = line_max;
+        }
+    }
+    printf("%d\n",ans);
+    return 0;
+}
