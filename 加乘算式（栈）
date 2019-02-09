@@ -1,0 +1,106 @@
+#include<cstdio>
+
+#include<iostream>
+
+#include<cstring>
+
+#include<stack>
+using namespace std;
+
+string x;
+
+stack <char> s;
+
+stack <long long> n;
+
+long long ans;
+
+int len;
+
+int main()
+
+{
+
+    int i=0;
+
+    getline(cin,x);
+
+    len=x.length();
+
+    while (i<=len-1)
+
+    {
+
+        int t=0;
+
+        bool f=false;
+
+        while(x[i]>='0'&&x[i]<='9')
+
+        {
+
+            t=t*10+(x[i]-48);
+
+            f=true;
+
+            i++;
+
+        }
+
+        if(f)
+
+        {
+
+            n.push(t%10000);
+
+            if(s.size()>=1&&s.top()=='*')
+
+            {
+
+                int k=n.top();
+
+                s.pop();
+
+                n.pop();
+
+                k*=n.top();
+
+                n.pop();
+
+                n.push(k%10000);
+
+            }
+
+        }
+
+        if(x[i]=='+'||x[i]=='*')
+
+        {
+
+            s.push(x[i]);
+
+            i++;
+
+        }
+
+    }
+
+    int size=n.size();
+
+    for (i=1;i<=size;i++)
+
+    {
+
+        ans+=n.top();
+
+        n.pop();
+
+        ans%=10000;
+
+    }
+
+    printf("%lld",ans%10000);
+
+    return 0;
+
+}
