@@ -1,0 +1,54 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int MAX_N = 10050;    ///区间长度的最大值
+
+int s[4*MAX_N] = {0};       ///s是维护区间的线段树
+
+void up(int p)      ///p是区间的编号
+{
+    s[p] = s[2*p]+s[2*p+1];     ///区间关系由up来确定。如这个就是区间和
+}
+/**
+p为编号,l与r是线段树确定对应区间的
+衡量工具。p,l,r一般有固定初始值，其为1,1,n，即从线段树顶端开始向下访问
+x为单点操作的即将访问区间点，v为修改值。（此处v是使区间点增加v）
+modify一般包含编号p,衡量工具l,r,修改区间x,y，修改值v
+**/
+void modify(int p,int l,int r,int x,int v)
+{
+    if(l==r){   ///因为modify限制x一定在l与r之间，所以当l==r，其一定在x的位置
+        s[p]+=v;
+        return ;    ///modify的结束语句
+    }
+    int mid = (l+r)/2;
+    ///相当于访问其子节点，故递归编号也需改成子节点的编号(左结点为2*p)
+    ///左结点对应的区间是l~mid(包括端点) 右节点类似的思想
+    ///修改区间(点)不变，修改值不变
+    if(x<=mid){
+        modify(2*p,l,mid,x,v);
+    }
+    else{
+        modify(2*p+1,mid+1,r,x,v);
+    }
+    up(p);      ///切记不要漏了向上传递
+}
+/**
+query跟up一样，所要提取区间信息的不同，修改的算法也很多
+但一般都有编号p，衡量工具l,r，访问区间x,y
+**/
+int query(int p,int l,int r,int x,int y)
+{
+    if(x<=l&&r<=y){
+        return s[p];
+    }
+    int mid = (l+r)/2,res = 0;
+    if(x<=mid){
+        res += query(2*p,l,mid,x,y);
+    }
+    if(y>mid)           ///y要严格大于mid
+    {
+        res += query(2*p,mid+1,r,x,y);
+    }
+    return res;
+}
+///此线段树为区间求和线段树
